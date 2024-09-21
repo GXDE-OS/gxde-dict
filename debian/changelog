@@ -1,3 +1,9 @@
+redict (0.8.1) UNRELEASED; urgency=medium
+
+  * Non-maintainer upload.
+
+ -- gfdgd_xi <3025613752@qq.com>  Sat, 21 Sep 2024 22:20:02 +0800
+
 redict (0.8) unstable; urgency=medium
 
   * 修复图片加载不成功问题
