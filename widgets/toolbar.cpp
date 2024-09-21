@@ -28,7 +28,7 @@
 ToolBar::ToolBar(QWidget *parent)
     : QWidget(parent)
 {
-    QPixmap iconPixmap = Utils::renderSVG(":/images/redict.svg", QSize(22, 22));
+    QPixmap iconPixmap = Utils::renderSVG(":/images/gxde-dict.svg", QSize(22, 22));
     QLabel *iconLabel = new QLabel;
     iconLabel->setPixmap(iconPixmap);
 

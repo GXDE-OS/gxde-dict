@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
       m_homePage(new HomePage),
       m_transPage(new TransPage),
       m_trayIcon(new TrayIcon(this)),
-      m_settings(new QSettings("deepin", "redict")),
+      m_settings(new QSettings("deepin", "gxde-dict")),
       m_menu(new QMenu),
       m_wordingAction(new QAction("划词翻译")),
       m_trayIconAction(new QAction("托盘显示")),
@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_mainLayout->addWidget(m_transPage);
 
     centralWidget->setLayout(m_mainLayout);
-    setWindowIcon(QIcon(":/images/redict.svg"));
+    setWindowIcon(QIcon(":/images/gxde-dict.svg"));
     setCentralWidget(centralWidget);
     setShadowOffset(QPoint(0, 0));
     setFixedSize(550, 428);

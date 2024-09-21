@@ -35,7 +35,7 @@ PopupWindow::PopupWindow(QWidget *parent)
 {
     connect(m_eventMonitor, &EventMonitor::buttonPress, this, &PopupWindow::onGlobMousePress, Qt::QueuedConnection);
 
-    m_iconPixmap = Utils::renderSVG(":/images/redict.svg", QSize(30, 30));
+    m_iconPixmap = Utils::renderSVG(":/images/gxde-dict.svg", QSize(30, 30));
 
     setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
     setAttribute(Qt::WA_TranslucentBackground);

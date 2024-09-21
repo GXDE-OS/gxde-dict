@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/redict.svg</file>
+        <file>images/gxde-dict.svg</file>
         <file>qss/light.qss</file>
         <file>qss/dark.qss</file>
         <file>images/search_light.svg</file>

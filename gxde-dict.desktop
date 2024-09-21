@@ -1,0 +1,12 @@
+[Desktop Entry]
+Categories=Utility;
+Comment=gxde-dict
+Exec=gxde-dict
+Icon=gxde-dict
+Name=GXDE Dict
+Name[zh_CN]=GXDE 词典
+StartupNotify=true
+TryExec=gxde-dict
+Type=Application
+
+

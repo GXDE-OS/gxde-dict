@@ -31,8 +31,8 @@ TrayIcon::TrayIcon(QObject *parent)
     m_menu->addAction(m_exitAction);
 
     setContextMenu(m_menu);
-    setIcon(QIcon(":/images/redict.svg"));
-    setToolTip(tr("Redict"));
+    setIcon(QIcon(":/images/gxde-dict.svg"));
+    setToolTip(tr("GXDE-Dictionary"));
 
     connect(this, &QSystemTrayIcon::activated, this, &TrayIcon::iconActive);
     connect(m_openAction, &QAction::triggered, this, &TrayIcon::openActionTriggered);

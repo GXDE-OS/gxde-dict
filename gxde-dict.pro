@@ -5,7 +5,7 @@
 QT += core gui widgets network multimedia x11extras
 
 TEMPLATE = app
-TARGET = redict
+TARGET = gxde-dict
 INCLUDEPATH += .
 CONFIG += c++11 link_pkgconfig
 PKGCONFIG += dtkwidget x11
@@ -50,17 +50,17 @@ SOURCES += dailypage.cpp \
            widgets/textedit.cpp \
            widgets/toolbar.cpp
 
-RESOURCES += redict.qrc
+RESOURCES += gxde-dict.qrc
 
 isEmpty(BINDIR):BINDIR=/usr/bin
 isEmpty(APPDIR):APPDIR=/usr/share/applications
-isEmpty(DSRDIR):DSRDIR=/usr/share/redict
+isEmpty(DSRDIR):DSRDIR=/usr/share/gxde-dict
 
 target.path = $$INSTROOT$$BINDIR
 icon_files.path = $$PREFIX/share/icons/hicolor/scalable/apps/
-icon_files.files = $$PWD/images/redict.svg
+icon_files.files = $$PWD/images/gxde-dict.svg
 
 desktop.path = $$INSTROOT$$APPDIR
-desktop.files = redict.desktop
+desktop.files = gxde-dict.desktop
 
 INSTALLS += target desktop icon_files

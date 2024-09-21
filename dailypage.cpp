@@ -72,7 +72,7 @@ DailyPage::~DailyPage()
 
 void DailyPage::checkDirectory()
 {
-    const QString path = QString("%1/.local/share/redict").arg(QDir::homePath());
+    const QString path = QString("%1/.local/share/gxde-dict").arg(QDir::homePath());
 
     if (!QDir(path).exists()) {
         QDir dir(path);
@@ -82,7 +82,7 @@ void DailyPage::checkDirectory()
 
 void DailyPage::clearImageCache()
 {
-    QDir dir(QString("%1/.local/share/redict").arg(QDir::homePath()));
+    QDir dir(QString("%1/.local/share/gxde-dict").arg(QDir::homePath()));
     QFileInfoList fileList = dir.entryInfoList(QDir::Files);
 
     for (const QFileInfo &file : fileList) {
@@ -102,7 +102,7 @@ void DailyPage::handleQueryFinished(std::tuple<QString, QString, QString, QStrin
     m_contentLabel->setText(dailyText);
     checkDirectory();
 
-    const QString picturePath = QString("%1/.local/share/redict/%2.jpeg").arg(QDir::homePath()).arg(std::get<2>(data));
+    const QString picturePath = QString("%1/.local/share/gxde-dict/%2.jpeg").arg(QDir::homePath()).arg(std::get<2>(data));
 
     if (!QFile::exists(picturePath)) {
         // auto clear image cache.
