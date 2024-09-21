@@ -1,12 +1,12 @@
-Source: redict
+Source: gxde-dict
 Section: utils
 Priority: optional
 Maintainer: Rekols <rekols@foxmail.com>
 Build-Depends: debhelper (>= 9),pkg-config, qt5-qmake, libdtkwidget2-dev, libqt5svg5-dev, qttools5-dev-tools, qtchooser, libxtst-dev
 Standards-Version: 3.9.8
-Homepage: https://github.com/rekols
+Homepage: https://gitee.com/GXDE
 
-Package: redict
+Package: gxde-dict
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: A third-party youdao dictionary for deepin.
+Description: GXDE youdao dictionary.
