@@ -69,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(centralWidget);
     setShadowOffset(QPoint(0, 0));
     setFixedSize(550, 428);
+    setWindowFlags( (windowFlags() | Qt::CustomizeWindowHint) & ~Qt::WindowMaximizeButtonHint); // https://segmentfault.com/q/1010000042762264 最大化按钮隐藏
 
     m_wordingAction->setCheckable(true);
     m_trayIconAction->setCheckable(true);

@@ -38,6 +38,7 @@ PopupWindow::PopupWindow(QWidget *parent)
     m_iconPixmap = Utils::renderSVG(":/images/gxde-dict.svg", QSize(30, 30));
 
     setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
+
     setAttribute(Qt::WA_TranslucentBackground);
     setCursor(Qt::PointingHandCursor);
     setFixedSize(30, 30);
