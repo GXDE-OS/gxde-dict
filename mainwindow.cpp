@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
       m_trayIconAction(new QAction("托盘显示")),
       m_themeAction(new QAction("暗色主题"))
 {
+    setEnableWindowBackground(1);
     m_eventMonitor->start();
 
     titlebar()->setCustomWidget(m_toolBar, Qt::AlignVCenter, false);
