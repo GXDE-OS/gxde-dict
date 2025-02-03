@@ -40,6 +40,7 @@ protected:
 private:
     void translate();
     void handleTranslateFinished(const QString &result);
+    void handleTranslateStreamDataReceived(const QString &result);
 
 private:
     TextEdit *m_orginEdit;

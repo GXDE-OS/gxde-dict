@@ -44,7 +44,6 @@ MainWindow::MainWindow(QWidget *parent)
       m_trayIconAction(new QAction("托盘显示")),
       m_themeAction(new QAction("暗色主题"))
 {
-    setEnableWindowBackground(1);
     m_eventMonitor->start();
 
     titlebar()->setCustomWidget(m_toolBar, Qt::AlignVCenter, false);
@@ -92,6 +91,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_themeAction, &QAction::triggered, this, &MainWindow::handleThemeTriggered);
     connect(m_toolBar, &ToolBar::currentChanged, m_mainLayout, &QStackedLayout::setCurrentIndex);
     connect(this, &MainWindow::requestKeyPressEvent, this, &MainWindow::keyPressEvent);
+
+    setEnableWindowBackground(1);
 }
 
 MainWindow::~MainWindow()

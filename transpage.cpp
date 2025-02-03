@@ -60,6 +60,7 @@ TransPage::TransPage(QWidget *parent)
     m_transEdit->setReadOnly(true);
 
     connect(m_transBtn, &QPushButton::clicked, this, &TransPage::translate);
+    connect(m_api, &YoudaoAPI::translateStreamDataReceived, this, &TransPage::handleTranslateStreamDataReceived);
     connect(m_api, &YoudaoAPI::translateFinished, this, &TransPage::handleTranslateFinished);
     connect(m_typeBox, &QComboBox::currentTextChanged, [=] { translate(); });
 
@@ -129,7 +130,16 @@ void TransPage::translate()
     m_api->translate(text, type);
 }
 
+void TransPage::handleTranslateStreamDataReceived(const QString &result)
+{
+    QString r = result;
+    r.replace("<think>", "");
+    r.replace("</think>", "");
+    r.replace("\n\n", "\n");
+    m_transEdit->setPlainText(m_transEdit->toPlainText() + r);
+}
+
 void TransPage::handleTranslateFinished(const QString &result)
 {
-    m_transEdit->setPlainText(result);
+    //m_transEdit->appendPlainText(result);
 }

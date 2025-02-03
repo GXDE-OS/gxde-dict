@@ -19,6 +19,7 @@
 
 #include "toolbar.h"
 #include "utils.h"
+#include "youdaoapi.h"
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDebug>
@@ -34,7 +35,10 @@ ToolBar::ToolBar(QWidget *parent)
 
     tabbar = new QTabBar;
     tabbar->addTab("词典");
-    //tabbar->addTab("翻译");
+
+    if (Utils::isOllamaHaveModel(USEMODELNAME)) {
+        tabbar->addTab("翻译");
+    }
     tabbar->setFocusPolicy(Qt::NoFocus);
     tabbar->installEventFilter(this);
 

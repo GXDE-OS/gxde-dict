@@ -22,6 +22,7 @@
 #include <QImageReader>
 #include <QFile>
 #include <QPixmap>
+#include <QProcess>
 
 Utils::Utils(QObject *parent)
     : QObject(parent)
@@ -42,6 +43,18 @@ QString Utils::getQssContent(const QString &filePath)
     file.close();
 
     return content;
+}
+
+bool Utils::isOllamaHaveModel(QString modelName)
+{
+    QProcess process;
+    process.start("bash", QStringList() << "-c"
+                  << "ollama list | grep deepseek-r1:7b");
+    process.waitForStarted();
+    process.waitForFinished();
+    int code = process.exitCode();
+    process.close();
+    return !code;
 }
 
 QPixmap Utils::renderSVG(const QString &path, const QSize &size)

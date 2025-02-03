@@ -25,6 +25,8 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 
+#define USEMODELNAME "deepseek-r1:1.5b"
+
 class YoudaoAPI : public QObject
 {
     Q_OBJECT
@@ -58,6 +60,9 @@ signals:
     void translateFinished(const QString result);
     void suggestFinished(const QStringList list);
 
+    void translateStreamDataReceived(const QString &data);
+
+
 private slots:
     void handleQueryWordFinished();
     void handleQueryDailyFinished();
@@ -66,6 +71,10 @@ private slots:
 
 private:
     QNetworkAccessManager *m_http;
+    QNetworkReply *m_transReply;
+    QString m_responseAll = "";
+
+    void onTranslateReadyRead();
 
 };
 

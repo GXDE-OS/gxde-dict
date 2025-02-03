@@ -86,9 +86,41 @@ void YoudaoAPI::suggest(const QString &text)
     connect(reply, &QNetworkReply::finished, this, &YoudaoAPI::handleSuggestFinished);
 }
 
+void YoudaoAPI::onTranslateReadyRead()
+{
+    QByteArray data = m_transReply->readAll();
+    QJsonDocument doc = QJsonDocument::fromJson(data);
+    QJsonObject json = doc.object();
+    QString response = json["response"].toString();
+    m_responseAll += response;
+    qDebug() << data;
+    emit translateStreamDataReceived(response);
+}
+
 void YoudaoAPI::translate(const QString &text, const QString &type)
 {
-    queryWord(text);
+    QUrl url("http://localhost:11434/api/generate"); // 假设 ollama 服务运行在本地
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QString question = "翻译：" + text;
+
+    m_responseAll = "";
+
+    // 构建请求体
+    QJsonObject json;
+    json["model"] = USEMODELNAME;
+    json["prompt"] = question;
+    json["stream"] = true;
+
+    QJsonDocument doc(json);
+    QByteArray data = doc.toJson();
+
+    m_transReply = m_http->post(request, data);
+    connect(m_transReply, &QNetworkReply::readyRead, this, &YoudaoAPI::onTranslateReadyRead);
+    connect(m_transReply, &QNetworkReply::finished, this, &YoudaoAPI::handleTranslateFinished);
+
+    //queryWord(text);
     /*QUrl url("https://openapi.youdao.com/api");
     QUrlQuery query;
     query.addQueryItem("dogVersion", "1.0");
@@ -206,26 +238,14 @@ void YoudaoAPI::handleQueryDailyFinished()
 
 void YoudaoAPI::handleTranslateFinished()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+    QNetworkReply *reply = m_transReply;
 
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << reply->errorString();
+        emit translateFinished(reply->errorString());
         return;
     }
-    QByteArray oldText = reply->readAll();
-    QJsonDocument document = QJsonDocument::fromJson(oldText);
-    QJsonArray array = document.object().value("translateResult").toArray();
-    qDebug() << oldText;
-    QString text;
-
-    for (const QJsonValue &value : array) {
-        QJsonArray arr = value.toArray();
-        for (const QJsonValue &value : arr) {
-            QString ret = value.toObject().value("tgt").toString();
-            text += ret;
-            text += "\n";
-        }
-    }
+    QString text = m_responseAll;
 
     emit translateFinished(text);
 }
