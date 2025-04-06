@@ -23,6 +23,7 @@
 //#include "speaker.h"
 #include "dabstractdialog.h"
 #include "dblureffectwidget.h"
+#include "dimagebutton.h"
 
 #include <QLabel>
 
@@ -36,15 +37,22 @@ public:
     PopupContent(QWidget *parent = nullptr);
     ~PopupContent();
 
+    void clear();
+
 protected:
     void mouseMoveEvent(QMouseEvent *);
 
 public slots:
     void updateContent(std::tuple<QString, QString, QString, QString, QString>);
+    void updateTranslate(QString text);
 
 private:
+    void speakText(QString text);
+
     QLabel *m_queryLabel;
     QLabel *m_transLabel;
+    DImageButton m_querySpeakBtn;
+    DImageButton m_transSpeakBtn;
 };
 
 #endif

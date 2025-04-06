@@ -53,6 +53,8 @@ private:
     YoudaoAPI *m_api;
     EventMonitor *m_eventMonitor;
     QPixmap m_iconPixmap;
+    QString m_systemLanguage = "zh";
+    QString m_translateText;
 };
 
 #endif

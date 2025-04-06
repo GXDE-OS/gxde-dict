@@ -45,7 +45,13 @@ PopupWindow::PopupWindow(QWidget *parent)
 
     QWidget::hide();
 
+    QString lang = qgetenv("LANG");
+    if (lang.contains("_")) {
+        m_systemLanguage = lang.split("_")[0];
+    }
+
     connect(m_api, &YoudaoAPI::searchFinished, m_content, &PopupContent::updateContent);
+    connect(m_api, &YoudaoAPI::translateFinished, m_content, &PopupContent::updateTranslate);
 }
 
 PopupWindow::~PopupWindow()
@@ -72,6 +78,7 @@ void PopupWindow::mouseReleaseEvent(QMouseEvent *e)
         QWidget::hide();
 
         m_content->show();
+        query(m_translateText);
         m_content->move(pos);
     }
 }
@@ -80,6 +87,7 @@ void PopupWindow::popup(const QPoint &pos)
 {
     QWidget::move(QPoint(pos.x(), pos.y() - 40));
     QWidget::show();
+    query(m_translateText);
 
     if (!m_eventMonitor->isRunning()) {
         m_eventMonitor->start();
@@ -90,6 +98,18 @@ void PopupWindow::popup(const QPoint &pos)
 
 void PopupWindow::query(const QString &text)
 {
+    if (m_content->isHidden()) {
+        m_translateText = text;
+        return;
+    }
+    m_content->clear();
+    QString checkText = text;
+    checkText = checkText.replace("  ", " ");
+    // 判断是否为句子
+    if (checkText.count(" ") > 2) {
+        m_api->translate(text, m_systemLanguage);
+        return;
+    }
     m_api->queryWord(text);
 }
 
