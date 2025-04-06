@@ -33,14 +33,10 @@ TransPage::TransPage(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(this);
     QHBoxLayout *transLayout = new QHBoxLayout;
 
-    m_typeBox->addItem("自动检测语言");
-    m_typeBox->addItem("中文 → 英语");
-    m_typeBox->addItem("中文 → 日语");
-    m_typeBox->addItem("中文 → 韩语");
-    m_typeBox->addItem("中文 → 法语");
-    m_typeBox->addItem("中文 → 俄语");
-    m_typeBox->addItem("中文 → 西班牙语");
-    m_typeBox->addItem("英语 → 中文");
+    //m_typeBox->addItem("自动检测语言");
+    for (QString i: m_translateName) {
+        m_typeBox->addItem("→ " + i);
+    }
 
     transLayout->addWidget(m_typeBox);
     transLayout->addWidget(m_transBtn);
@@ -60,7 +56,7 @@ TransPage::TransPage(QWidget *parent)
     m_transEdit->setReadOnly(true);
 
     connect(m_transBtn, &QPushButton::clicked, this, &TransPage::translate);
-    connect(m_api, &YoudaoAPI::translateStreamDataReceived, this, &TransPage::handleTranslateStreamDataReceived);
+    //connect(m_api, &YoudaoAPI::translateStreamDataReceived, this, &TransPage::handleTranslateStreamDataReceived);
     connect(m_api, &YoudaoAPI::translateFinished, this, &TransPage::handleTranslateFinished);
     connect(m_typeBox, &QComboBox::currentTextChanged, [=] { translate(); });
 
@@ -96,38 +92,7 @@ void TransPage::translate()
         return;
 
     int currentType = m_typeBox->currentIndex();
-    QString type;
-
-    switch (currentType) {
-    case 0:
-        type = "AUTO";
-        break;
-    case 1:
-        type = "ZH_CN2EN";
-        break;
-    case 2:
-        type = "ZH_CN2JA";
-        break;
-    case 3:
-        type = "ZH_CN2KR";
-        break;
-    case 4:
-        type = "ZH_CN2FR";
-        break;
-    case 5:
-        type = "ZH_CN2RU";
-        break;
-    case 6:
-        type = "ZH_CN2SP";
-        break;
-    case 7:
-        type = "EN2ZH_CN";
-        break;
-    default:
-        break;
-    }
-
-    m_api->translate(text, type);
+    m_api->translate(text, m_translateToList[currentType]);
 }
 
 void TransPage::handleTranslateStreamDataReceived(const QString &result)
@@ -141,5 +106,5 @@ void TransPage::handleTranslateStreamDataReceived(const QString &result)
 
 void TransPage::handleTranslateFinished(const QString &result)
 {
-    //m_transEdit->appendPlainText(result);
+    m_transEdit->setPlainText(result);
 }

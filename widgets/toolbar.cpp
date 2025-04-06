@@ -36,9 +36,7 @@ ToolBar::ToolBar(QWidget *parent)
     tabbar = new QTabBar;
     tabbar->addTab("词典");
 
-    if (Utils::isOllamaHaveModel(USEMODELNAME)) {
-        tabbar->addTab("翻译");
-    }
+    tabbar->addTab("翻译");
     tabbar->setFocusPolicy(Qt::NoFocus);
     tabbar->installEventFilter(this);
 

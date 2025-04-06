@@ -32,7 +32,6 @@ public:
 
     static QString getQssContent(const QString &filePath);
     static QPixmap renderSVG(const QString &path, const QSize &size);
-    static bool isOllamaHaveModel(QString modelName);
 };
 
 #endif

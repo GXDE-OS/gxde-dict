@@ -9,4 +9,5 @@ Homepage: https://gitee.com/GXDE
 Package: gxde-dict
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: gxde-daemon (>= 1.2.7)
 Description: GXDE youdao dictionary.

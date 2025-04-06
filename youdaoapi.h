@@ -24,8 +24,27 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QThread>
+#include <QDBusInterface>
 
-#define USEMODELNAME "deepseek-r1:1.5b"
+#define TRANSLATEDBUS_DESTINATION "com.gxde.daemon.ai.translate"
+#define TRANSLATEDBUS_PATH "/com/gxde/daemon/ai/translate"
+#define TRANSLATEDBUS_INTERFACE "com.gxde.daemon.ai.translate"
+
+class GetDBusTranslate: public QThread
+{
+    Q_OBJECT
+public:
+    GetDBusTranslate(const QString &text, const QString &to);
+    void run() override;
+
+private:
+    QString m_text;
+    QString m_to;
+
+signals:
+    void translateResult(QString text);
+};
 
 class YoudaoAPI : public QObject
 {
@@ -39,7 +58,7 @@ public:
 
     void queryWord(const QString &text);
     void suggest(const QString &text);
-    void translate(const QString &text, const QString &type);
+    void translate(const QString &text, const QString &to);
     void queryDaily();
 
 signals:
@@ -66,12 +85,12 @@ signals:
 private slots:
     void handleQueryWordFinished();
     void handleQueryDailyFinished();
-    void handleTranslateFinished();
+    void handleTranslateFinished(QString text);
     void handleSuggestFinished();
 
 private:
     QNetworkAccessManager *m_http;
-    QNetworkReply *m_transReply;
+    //QNetworkReply *m_transReply;
     QString m_responseAll = "";
 
     void onTranslateReadyRead();

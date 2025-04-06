@@ -48,6 +48,14 @@ private:
     QComboBox *m_typeBox;
     QPushButton *m_transBtn;
     YoudaoAPI *m_api;
+    QStringList m_translateName = QStringList()
+            << "简体中文" << "繁體中文" << "粵語"
+            << "English" << "日本語" << "한국어"
+            << "Français" << "Русский" << "Español";
+    QStringList m_translateToList = QStringList()
+            << "zh" << "zh-TW" << "yue"
+            << "en" << "ja" << "ko"
+            << "fr" << "ru" << "es";
 
     QMap<QString, QString> m_types;
 };

@@ -1,8 +1,9 @@
-gxde-dict (0.8.3) UNRELEASED; urgency=medium
+gxde-dict (0.9.0) UNRELEASED; urgency=medium
 
   * 新增支持设置背景图片标签
+  * 恢复应用翻译功能
 
- -- gfdgd_xi <3025613752@qq.com>  Mon, 03 Feb 2025 22:51:31 +0800
+ -- gfdgd_xi <3025613752@qq.com>  Sun, 06 Apr 2025 12:24:58 +0800
 
 gxde-dict (0.8.1) UNRELEASED; urgency=medium
 

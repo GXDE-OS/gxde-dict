@@ -88,60 +88,59 @@ void YoudaoAPI::suggest(const QString &text)
 
 void YoudaoAPI::onTranslateReadyRead()
 {
-    QByteArray data = m_transReply->readAll();
+    /*QByteArray data = m_transReply->readAll();
     QJsonDocument doc = QJsonDocument::fromJson(data);
     QJsonObject json = doc.object();
     QString response = json["response"].toString();
     m_responseAll += response;
     qDebug() << data;
-    emit translateStreamDataReceived(response);
+    emit translateStreamDataReceived(response);*/
 }
 
-void YoudaoAPI::translate(const QString &text, const QString &type)
+
+
+GetDBusTranslate::GetDBusTranslate(const QString &text, const QString &to)
 {
-    QUrl url("http://localhost:11434/api/generate"); // 假设 ollama 服务运行在本地
-    QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    m_text = text;
+    m_to = to;
+}
 
-    QString question = "翻译：" + text;
+void GetDBusTranslate::run()
+{
+    QDBusMessage dbus = QDBusMessage::createMethodCall(TRANSLATEDBUS_DESTINATION,
+                                                       TRANSLATEDBUS_PATH,
+                                                       TRANSLATEDBUS_INTERFACE,
+                                                       "Translate");
+    dbus << m_text << m_to;
+    QDBusMessage res = QDBusConnection::sessionBus().call(dbus);
+    qDebug() << res.arguments();
+    emit translateResult(res.arguments().at(0).toString());
+}
 
-    m_responseAll = "";
 
-    // 构建请求体
-    QJsonObject json;
-    json["model"] = USEMODELNAME;
-    json["prompt"] = question;
-    json["stream"] = true;
-
-    QJsonDocument doc(json);
-    QByteArray data = doc.toJson();
-
-    m_transReply = m_http->post(request, data);
-    connect(m_transReply, &QNetworkReply::readyRead, this, &YoudaoAPI::onTranslateReadyRead);
-    connect(m_transReply, &QNetworkReply::finished, this, &YoudaoAPI::handleTranslateFinished);
-
+void YoudaoAPI::translate(const QString &text, const QString &to)
+{
+    auto *thread = new GetDBusTranslate(text, to);
+    connect(thread, &GetDBusTranslate::translateResult, this, &YoudaoAPI::handleTranslateFinished);
+    thread->start();
     //queryWord(text);
-    /*QUrl url("https://openapi.youdao.com/api");
-    QUrlQuery query;
-    query.addQueryItem("dogVersion", "1.0");
-    query.addQueryItem("ue", "utf8");
-    query.addQueryItem("doctype", "json");
-    query.addQueryItem("xmlVersion", "1.6");
-    query.addQueryItem("client", "deskdict_deepin");
-    query.addQueryItem("id", "92dc50aa4970fb72d");
-    query.addQueryItem("vendor", "YoudaoDict");
-    query.addQueryItem("appVer", "1.0.3");
-    query.addQueryItem("appZengqiang", "0");
-    query.addQueryItem("abTest", "5");
-    query.addQueryItem("smartresult", "dict");
-    query.addQueryItem("smartresult", "rule");
-    query.addQueryItem("keyfrom", "deskdict.main");
-    query.addQueryItem("q", text);
-    query.addQueryItem("type", type);
-    url.setQuery(query.toString(QUrl::FullyEncoded));
+    /*QUrl url("https://libretranslate.com/translate");
+
+    // 构建 JSON 请求体
+    QJsonObject jsonBody;
+    jsonBody["q"] = text;
+    jsonBody["source"] = "auto";
+    jsonBody["target"] = "zh";
+
+    QByteArray postData = QJsonDocument(jsonBody).toJson();
 
     QNetworkRequest request(url);
-    QNetworkReply *reply = m_http->get(request);
+    request.setRawHeader("User-Agent", "Mozilla/5.0 (Qt HTTP Request)");
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    QNetworkReply *reply = m_http->post(request, postData);
+
+    m_transReply = reply;
 
     connect(reply, &QNetworkReply::finished, this, &YoudaoAPI::handleTranslateFinished);*/
 }
@@ -236,17 +235,8 @@ void YoudaoAPI::handleQueryDailyFinished()
     emit dailyFinished(std::make_tuple(title, summary, time, voiceURL, imageURL));
 }
 
-void YoudaoAPI::handleTranslateFinished()
+void YoudaoAPI::handleTranslateFinished(QString text)
 {
-    QNetworkReply *reply = m_transReply;
-
-    if (reply->error() != QNetworkReply::NoError) {
-        qDebug() << reply->errorString();
-        emit translateFinished(reply->errorString());
-        return;
-    }
-    QString text = m_responseAll;
-
     emit translateFinished(text);
 }
 
