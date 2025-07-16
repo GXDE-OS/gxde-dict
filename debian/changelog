@@ -1,11 +1,12 @@
-gxde-dict (0.9.0) UNRELEASED; urgency=medium
+gxde-dict (0.9.1) UNRELEASED; urgency=medium
 
   * 新增支持设置背景图片标签
   * 恢复应用翻译功能
   * 优化划词翻译在部分情况字体显示不清的问题
   * 划词翻译新增整句翻译功能
+  * 句子翻译支持自动选择目标语言
 
- -- gfdgd_xi <3025613752@qq.com>  Sun, 06 Apr 2025 12:24:58 +0800
+ -- gfdgd_xi <3025613752@qq.com>  Wed, 16 Jul 2025 17:17:39 +0800
 
 gxde-dict (0.8.1) UNRELEASED; urgency=medium
 

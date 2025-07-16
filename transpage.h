@@ -49,10 +49,12 @@ private:
     QPushButton *m_transBtn;
     YoudaoAPI *m_api;
     QStringList m_translateName = QStringList()
+            << tr("Auto")
             << "简体中文" << "繁體中文" << "粵語"
             << "English" << "日本語" << "한국어"
             << "Français" << "Русский" << "Español";
     QStringList m_translateToList = QStringList()
+            << "Auto"
             << "zh" << "zh-TW" << "yue"
             << "en" << "ja" << "ko"
             << "fr" << "ru" << "es";
