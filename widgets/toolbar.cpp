@@ -46,7 +46,7 @@ ToolBar::ToolBar(QWidget *parent)
     layout->addSpacing(5);
     layout->addWidget(tabbar);
     layout->addStretch();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     connect(tabbar, &QTabBar::currentChanged, this, [=] (int current) { emit currentChanged(current); });
 }

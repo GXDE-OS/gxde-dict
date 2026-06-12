@@ -92,7 +92,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_toolBar, &ToolBar::currentChanged, m_mainLayout, &QStackedLayout::setCurrentIndex);
     connect(this, &MainWindow::requestKeyPressEvent, this, &MainWindow::keyPressEvent);
 
-    setEnableWindowBackground(1);
+    QMetaObject::invokeMethod(this, [this]() {
+        setEnableWindowBackground(true);
+    }, Qt::QueuedConnection);
 }
 
 MainWindow::~MainWindow()

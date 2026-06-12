@@ -23,6 +23,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QMediaPlayer>
+#include <QAudioOutput>
 #include "dimagebutton.h"
 #include "youdaoapi.h"
 
@@ -52,6 +53,7 @@ private:
     QLabel *m_ukLabel;
     QLabel *m_usLabel;
     QMediaPlayer *m_audio;
+    QAudioOutput *m_audioOutput;
     ScrollArea *m_scrollArea;
 };
 

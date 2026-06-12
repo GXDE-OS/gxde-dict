@@ -32,7 +32,8 @@ DictPage::DictPage(QWidget *parent)
       m_usLabel(new QLabel),
       m_ukBtn(new DImageButton),
       m_usBtn(new DImageButton),
-      m_audio(new QMediaPlayer)
+      m_audio(new QMediaPlayer),
+      m_audioOutput(new QAudioOutput)
 {
     ScrollArea *contentFrame = new ScrollArea;
     m_scrollArea = contentFrame;
@@ -78,6 +79,8 @@ DictPage::DictPage(QWidget *parent)
     m_wordLabel->setStyleSheet("QLabel { color: #2CA7F8; font-size: 25px; font-weight: bold; }");
     m_infoLabel->setStyleSheet("QLabel { font-size: 16px; } ");
 
+    m_audio->setAudioOutput(m_audioOutput);
+
     initTheme();
 
     connect(DThemeManager::instance(), &DThemeManager::themeChanged, this, &DictPage::initTheme);
@@ -85,12 +88,12 @@ DictPage::DictPage(QWidget *parent)
     connect(m_api, &YoudaoAPI::searchFinished, this, &DictPage::handleQueryFinished);
 
     connect(m_ukBtn, &DImageButton::clicked, this, [=]{
-        m_audio->setMedia(QUrl("http://dict.youdao.com/dictvoice?type=1&audio=" + m_wordLabel->text()));
+        m_audio->setSource(QUrl("http://dict.youdao.com/dictvoice?type=1&audio=" + m_wordLabel->text()));
         m_audio->play();
     });
 
     connect(m_usBtn, &DImageButton::clicked, this, [=]{
-        m_audio->setMedia(QUrl("http://dict.youdao.com/dictvoice?type=2&audio=" + m_wordLabel->text()));
+        m_audio->setSource(QUrl("http://dict.youdao.com/dictvoice?type=2&audio=" + m_wordLabel->text()));
         m_audio->play();
     });
 }

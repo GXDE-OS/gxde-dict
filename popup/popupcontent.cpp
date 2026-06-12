@@ -20,6 +20,7 @@
 #include "popupcontent.h"
 #include <QScrollArea>
 #include <QVBoxLayout>
+#include <QGridLayout>
 #include <QMouseEvent>
 #include <QLabel>
 #include "dimagebutton.h"
@@ -47,7 +48,7 @@ PopupContent::PopupContent(QWidget *parent)
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(contentFrame);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     m_querySpeakBtn.setNormalPic(":/images/audio-light-normal.svg");
     m_querySpeakBtn.setHoverPic(":/images/audio-light-hover.svg");
@@ -101,9 +102,10 @@ void PopupContent::speakText(QString text)
                                                        "com.gxde.daemon.ai.speaker",
                                                        "TextToSpeech");
     dbus << text;
-    QtConcurrent::run([=]() {
+    auto future = QtConcurrent::run([=]() {
         QDBusConnection::sessionBus().call(dbus);
     });
+    Q_UNUSED(future)
 }
 
 void PopupContent::clear()

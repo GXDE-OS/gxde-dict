@@ -12,6 +12,6 @@ Speaker::Speaker(QString text)
     PyObject* pFunc = PyObject_GetAttrString(pModule, "Play");
     PyObject* pArgs = PyTuple_New(1);
     PyTuple_SetItem(pArgs, 0, Py_BuildValue("s", text.toStdString().c_str()));
-    PyObject* pReturn = PyEval_CallObject(pFunc, pArgs);
+    PyObject* pReturn = PyObject_CallObject(pFunc, pArgs);
     Py_Finalize();
 }

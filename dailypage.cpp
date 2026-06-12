@@ -47,7 +47,7 @@ DailyPage::DailyPage(QWidget *parent)
     m_contentLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     m_contentLabel->setWordWrap(true);
 
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
     mainLayout->addWidget(scrollArea);
 

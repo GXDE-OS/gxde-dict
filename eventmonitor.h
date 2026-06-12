@@ -26,10 +26,6 @@
 #include <QDebug>
 #include <QTimer>
 
-#include <QX11Info>
-#include <X11/Xlib.h>
-#include <X11/extensions/record.h>
-
 class EventMonitor : public QThread
 {
     Q_OBJECT
@@ -44,8 +40,6 @@ signals:
 
 protected:
     void run();
-    static void callback(XPointer trash, XRecordInterceptData* data);
-    void handleEvent(XRecordInterceptData* data);
 };
 
 #endif

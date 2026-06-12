@@ -26,9 +26,7 @@ DWIDGET_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
-    DApplication::loadDXcbPlugin();
     DApplication app(argc, argv);
-    app.setAttribute(Qt::AA_UseHighDpiPixmaps);
     app.loadTranslator();
     app.setOrganizationName("GXDE");
     app.setApplicationVersion(DApplication::buildVersion("0.1"));

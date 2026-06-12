@@ -38,18 +38,18 @@ HomePage::HomePage(QWidget *parent)
     queryLayout->addWidget(m_queryEdit);
     queryLayout->addWidget(queryBtn);
     queryLayout->setSpacing(0);
-    queryLayout->setMargin(0);
+    queryLayout->setContentsMargins(0, 0, 0, 0);
 
     queryBtn->setFocusPolicy(Qt::NoFocus);
     queryBtn->setObjectName("QueryBtn");
     queryBtn->setFixedSize(90, 35);
 
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
     mainLayout->addLayout(queryLayout);
     mainLayout->addLayout(m_layout);
 
-    m_layout->setMargin(0);
+    m_layout->setContentsMargins(0, 0, 0, 0);
     m_layout->setSpacing(0);
     m_layout->addWidget(m_dailyPage);
     m_layout->addWidget(m_dictPage);

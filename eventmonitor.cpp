@@ -18,7 +18,14 @@
  */
 
 #include "eventmonitor.h"
+
+#include <QGuiApplication>
+
+#include <X11/Xlib.h>
 #include <X11/Xlibint.h>
+#include <X11/extensions/record.h>
+
+static void xrecordCallback(XPointer ptr, XRecordInterceptData *data);
 
 EventMonitor::EventMonitor(QObject *parent)
     : QThread(parent)
@@ -37,17 +44,18 @@ void EventMonitor::run()
     if (isInterruptionRequested())
         return;
 
-    auto *display = QX11Info::display();
+    auto *x11App = qApp->nativeInterface<QNativeInterface::QX11Application>();
+    if (!x11App)
+        return;
+    auto *display = x11App->display();
 
-    // unable to open display.
-    if (display == 0) {
+    if (display == nullptr) {
         return;
     }
 
     XRecordClientSpec clients = XRecordAllClients;
     XRecordRange *range = XRecordAllocRange();
-    // unable to allocate XRecordRange
-    if (range == 0) {
+    if (range == nullptr) {
         return;
     }
 
@@ -63,50 +71,35 @@ void EventMonitor::run()
 
     XSync(display, True);
 
-    Display *display_datalink = XOpenDisplay(0);
-    if (display_datalink == 0) {
+    Display *display_datalink = XOpenDisplay(nullptr);
+    if (display_datalink == nullptr) {
         return;
     }
 
-    if (!XRecordEnableContext(display_datalink, context, callback, (XPointer) this)) {
-        return;
-    }
+    XRecordEnableContext(display_datalink, context, xrecordCallback, (XPointer) this);
 }
 
-void EventMonitor::callback(XPointer ptr, XRecordInterceptData* data)
+static void xrecordCallback(XPointer ptr, XRecordInterceptData *data)
 {
-    ((EventMonitor *) ptr)->handleEvent(data);
-}
+    EventMonitor *monitor = static_cast<EventMonitor *>(static_cast<void *>(ptr));
 
-void EventMonitor::handleEvent(XRecordInterceptData* data)
-{
     if (data->category == XRecordFromServer) {
         xEvent *event = (xEvent *)data->data;
 
         switch (event->u.u.type) {
         case ButtonPress:
-            Q_EMIT buttonPress(event->u.keyButtonPointer.rootX,
-                               event->u.keyButtonPointer.rootY);
-
-            // 鼠标左键点击
-            if (event->u.u.detail == 1) {
-
-            }
-
+            QMetaObject::invokeMethod(monitor, "buttonPress", Qt::QueuedConnection,
+                                      Q_ARG(int, event->u.keyButtonPointer.rootX),
+                                      Q_ARG(int, event->u.keyButtonPointer.rootY));
             break;
 
         case ButtonRelease:
-            Q_EMIT buttonRelease(event->u.keyButtonPointer.rootX,
-                                 event->u.keyButtonPointer.rootY);
-
-            // 鼠标左键释放
-            if (event->u.u.detail == 1) {
-
-            }
+            QMetaObject::invokeMethod(monitor, "buttonRelease", Qt::QueuedConnection,
+                                      Q_ARG(int, event->u.keyButtonPointer.rootX),
+                                      Q_ARG(int, event->u.keyButtonPointer.rootY));
             break;
 
-        case MotionNotify:
-            // 鼠标移动
+        default:
             break;
         }
     }
