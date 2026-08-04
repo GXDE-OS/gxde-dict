@@ -22,7 +22,7 @@
 #include <QMouseEvent>
 #include <QCloseEvent>
 #include <QPainter>
-#include <QDebug>
+#include <QGuiApplication>
 
 #include "eventmonitor.h"
 
@@ -78,30 +78,30 @@ void PopupWindow::mouseReleaseEvent(QMouseEvent *e)
         QWidget::hide();
 
         m_content->show();
-        query(m_translateText);
         m_content->move(pos);
+        query(m_translateText);
     }
 }
 
 void PopupWindow::popup(const QPoint &pos)
 {
+    m_content->hide();
     QWidget::move(QPoint(pos.x(), pos.y() - 40));
     QWidget::show();
-    query(m_translateText);
 
     if (!m_eventMonitor->isRunning()) {
         m_eventMonitor->start();
     }
-
-    m_content->hide();
 }
 
 void PopupWindow::query(const QString &text)
 {
+    m_translateText = text;
+
     if (m_content->isHidden()) {
-        m_translateText = text;
         return;
     }
+
     m_content->clear();
     QString checkText = text;
     checkText = checkText.replace("  ", " ");
@@ -115,7 +115,9 @@ void PopupWindow::query(const QString &text)
 
 void PopupWindow::onGlobMousePress(const int &x, const int &y)
 {
-    QPoint mousePos(x, y);
+    // 将 X11 物理坐标转换为 Qt 逻辑坐标（处理 HiDPI 缩放）
+    qreal ratio = QGuiApplication::primaryScreen()->devicePixelRatio();
+    QPoint mousePos(x / ratio, y / ratio);
 
     if (m_content->isVisible()) {
         const QRect rect = QRect(m_content->pos(), m_content->size());
