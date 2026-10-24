@@ -24,6 +24,7 @@
 #include <QMouseEvent>
 #include <QLabel>
 #include "dimagebutton.h"
+#include "dthememanager.h"
 #include <QDBusMessage>
 #include <QtConcurrent>
 #include <QDBusConnection>
@@ -43,24 +44,18 @@ PopupContent::PopupContent(QWidget *parent)
                                 + "QScrollArea { background: transparent; }" 
                                 + "QScrollArea > QWidget > QWidget { background: transparent; }");
 
-    m_transLabel->setStyleSheet("color: black;");
-    m_queryLabel->setStyleSheet("color: black;");
+    m_transLabel->setStyleSheet("color: palette(text);");
+    m_queryLabel->setStyleSheet("color: palette(text);");
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(contentFrame);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    m_querySpeakBtn.setNormalPic(":/images/audio-light-normal.svg");
-    m_querySpeakBtn.setHoverPic(":/images/audio-light-hover.svg");
-    m_querySpeakBtn.setPressPic(":/images/audio-light-press.svg");
     layout->addWidget(&m_querySpeakBtn);
     connect(&m_querySpeakBtn, &DImageButton::clicked, this, [this](){
         speakText(m_queryLabel->text());
     });
 
-    m_transSpeakBtn.setNormalPic(":/images/audio-light-normal.svg");
-    m_transSpeakBtn.setHoverPic(":/images/audio-light-hover.svg");
-    m_transSpeakBtn.setPressPic(":/images/audio-light-press.svg");
     layout->addWidget(&m_transSpeakBtn);
     connect(&m_transSpeakBtn, &DImageButton::clicked, this, [this](){
         speakText(m_transLabel->text());
@@ -77,6 +72,9 @@ PopupContent::PopupContent(QWidget *parent)
     mainLayout->addWidget(m_transLabel, 1, 0);
     mainLayout->addWidget(&m_transSpeakBtn, 1, 1);
     //mainLayout->addStretch();
+
+    initTheme();
+    connect(DThemeManager::instance(), &DThemeManager::themeChanged, this, &PopupContent::initTheme);
 
     m_queryLabel->setWordWrap(true);
     m_transLabel->setWordWrap(true);
@@ -128,4 +126,18 @@ void PopupContent::updateTranslate(QString text)
     m_querySpeakBtn.hide();
     m_queryLabel->setText("");
     m_transLabel->setText(text);
+}
+
+void PopupContent::initTheme()
+{
+    const bool isDark = DThemeManager::instance()->theme() == "dark";
+    const QString p = isDark ? ":/images/audio-dark-" : ":/images/audio-light-";
+
+    m_querySpeakBtn.setNormalPic(p + "normal.svg");
+    m_querySpeakBtn.setHoverPic(p + "hover.svg");
+    m_querySpeakBtn.setPressPic(p + "press.svg");
+
+    m_transSpeakBtn.setNormalPic(p + "normal.svg");
+    m_transSpeakBtn.setHoverPic(p + "hover.svg");
+    m_transSpeakBtn.setPressPic(p + "press.svg");
 }

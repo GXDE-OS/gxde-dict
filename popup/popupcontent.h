@@ -48,6 +48,7 @@ public slots:
 
 private:
     void speakText(QString text);
+    void initTheme();
 
     QLabel *m_queryLabel;
     QLabel *m_transLabel;

@@ -42,6 +42,7 @@ QueryEdit::QueryEdit(QWidget *parent)
     setLayout(layout);
 
     m_iconLabel->setFixedSize(18, 18);
+    m_closeBtn->setFixedSize(18, 18);
     m_closeBtn->hide();
 
     layout->addSpacing(3);
@@ -179,9 +180,9 @@ void QueryEdit::initTheme()
     QPixmap iconPixmap;
 
     if (isDark) {
-        iconPixmap = Utils::renderSVG(":/images/search_dark.svg", QSize(12, 12));
+        iconPixmap = Utils::renderSVG(":/images/search_dark.svg", QSize(18, 18));
     } else {
-        iconPixmap = Utils::renderSVG(":/images/search_light.svg", QSize(12, 12));
+        iconPixmap = Utils::renderSVG(":/images/search_light.svg", QSize(18, 18));
     }
 
     m_iconLabel->setPixmap(iconPixmap);
