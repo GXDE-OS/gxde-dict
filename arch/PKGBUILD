@@ -1,16 +1,17 @@
 # Maintainer: CharOfString <root@charofstring.cc>
-pkgname=gxde-dict-git
+pkgname=gxde-dict
 pkgver=1.0.4
 pkgrel=1
 pkgdesc='GXDE Youdao dictionary'
 arch=('x86_64' 'aarch64')
 url="https://github.com/GXDE-OS/gxde-dict"
 license=('GPL-3.0-or-later')
-depends=('dtk2widget-qt6-git' 'dtk6core-git' 'qt6-base' 'qt6-multimedia' 'libx11' 'libxtst'
+depends=('dtk2widget-qt6' 'gxde-dtk6core' 'qt6-base' 'qt6-multimedia' 'libx11' 'libxtst'
          'hicolor-icon-theme' 'libgcc' 'libstdc++' 'glibc')
-makedepends=('git' 'cmake' 'ninja' 'pkgconf' 'qt6-tools' 'dtk6gui-git' 'libxext')
-provides=('gxde-dict')
-conflicts=('gxde-dict')
+makedepends=('git' 'cmake' 'ninja' 'pkgconf' 'qt6-tools' 'gxde-dtk6gui' 'libxext')
+provides=("gxde-dict-git=$pkgver")
+conflicts=('gxde-dict-git')
+replaces=('gxde-dict-git')
 source=()
 sha512sums=()
 
